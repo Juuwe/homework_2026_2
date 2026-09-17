@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Проверяет, является ли значение валидным объектом
@@ -6,7 +6,7 @@
  * @returns {boolean}
  */
 const isValidObject = (value) =>
-  typeof value === 'object' && value !== null && !Array.isArray(value);
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
 /**
  * Функция, которая принимает два объекта и возвращает новый объект,
@@ -26,23 +26,23 @@ const isValidObject = (value) =>
 function findUniqueProperties(firstObject, secondObject) {
   if (!isValidObject(firstObject) || !isValidObject(secondObject)) {
     throw new TypeError(
-      'Оба аргумента функции findUniqueProperties должны быть валидными объектами.',
+      "Оба аргумента функции findUniqueProperties должны быть валидными объектами.",
     );
   }
 
   const resultObject = {};
 
-  for (const key of Object.keys(firstObject)) {
+  Object.keys(firstObject).forEach((key) => {
     if (!Object.hasOwn(secondObject, key)) {
       resultObject[key] = firstObject[key];
     }
-  }
+  });
 
-  for (const key of Object.keys(secondObject)) {
+  Object.keys(secondObject).forEach((key) => {
     if (!Object.hasOwn(firstObject, key)) {
       resultObject[key] = secondObject[key];
     }
-  }
+  });
 
   return resultObject;
 }
