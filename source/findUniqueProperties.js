@@ -28,6 +28,7 @@ const isValidObject = (value) => {
  * findUniqueProperties(pets1, pets2);
  *
  * @returns {Object} новый объект, содержащий только уникальные свойства
+ * @throws {TypeError} ошибка, если хотя бы один из аргументов не является валидным объектом
  */
 function findUniqueProperties(firstObject, secondObject) {
   if (!isValidObject(firstObject) || !isValidObject(secondObject)) {
