@@ -101,6 +101,7 @@ QUnit.module('Тестируем функцию findUniqueProperties', function(
 
     QUnit.test('Выполняет копирование по значению / ссылке для свойств-функции/Symbol', function(assert) {
         const originalSymbol = Symbol('original');
+        // eslint-disable-next-line require-jsdoc
         const originalFunction = () => 10;
 
         const result = findUniqueProperties(
