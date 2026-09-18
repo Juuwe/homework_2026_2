@@ -56,13 +56,13 @@ QUnit.module('Тестируем функцию findUniqueProperties', function(
         const firstObject = Object.setPrototypeOf({ a: 1, b: 2 }, null);
         const secondObject = Object.setPrototypeOf({ b: 20, c: 3 }, null);
 
-        const result = findUniqueProperties(firstObject, secondObject)
+        const result = findUniqueProperties(firstObject, secondObject);
 
         assert.deepEqual(result, { a: 1, c: 3 }, 'Два объекта без прототипа не меняют ожидаемое поведение функции.');
     });
 
     QUnit.test('Не выполняет копирование свойств-объектов по ссылке, а делает поверхностное копирование', function(assert) {
-        const originalPropertyObject = { username: "daniil", password: "123" }
+        const originalPropertyObject = { username: "daniil", password: "123" };
 
         const result = findUniqueProperties(
             { 101:  originalPropertyObject},
@@ -75,7 +75,7 @@ QUnit.module('Тестируем функцию findUniqueProperties', function(
             'Свойство-объект результата не должен совпадать по ссылке с исходным'
         );
 
-        result[101].username = "unknown"
+        result[101].username = "unknown";
 
         assert.deepEqual(originalPropertyObject, { username: "daniil", password: "123" }, '.');
     });
@@ -100,7 +100,7 @@ QUnit.module('Тестируем функцию findUniqueProperties', function(
     });
 
     QUnit.test('Выполняет копирование по значению / ссылке для свойств-функции/Symbol', function(assert) {
-        const originalSymbol = Symbol('original')
+        const originalSymbol = Symbol('original');
         const originalFunction = () => 10;
 
         const result = findUniqueProperties(
@@ -125,48 +125,48 @@ QUnit.module('Тестируем функцию findUniqueProperties', function(
         assert.throws(
             () => findUniqueProperties(new Set([1, 5, 2]), { a: -7}),
             TypeError,
-            'Передача Set в параметры выбрасывает TypeError')
+            'Передача Set в параметры выбрасывает TypeError');
     });
 
     QUnit.test('Выбрасывает исключение, если вместо валидного объекта передан массив', function(assert) {
         assert.throws(
             () => findUniqueProperties({ a: -7}, [1, 5, 2]),
             TypeError,
-            'Передача массива в параметры выбрасывает TypeError')
+            'Передача массива в параметры выбрасывает TypeError');
     });
 
     QUnit.test('Выбрасывает исключение, если вместо валидного объекта передана строка', function(assert) {
         assert.throws(
             () => findUniqueProperties({ a: -7}, 'объект'),
             TypeError,
-            'Передача string в параметры выбрасывает TypeError')
+            'Передача string в параметры выбрасывает TypeError');
     });
 
     QUnit.test('Выбрасывает исключение, если вместо валидного объекта передано число', function(assert) {
         assert.throws(
             () => findUniqueProperties(123131, { a: -7}),
             TypeError,
-            'Передача number в параметры выбрасывает TypeError')
+            'Передача number в параметры выбрасывает TypeError');
     });
 
     QUnit.test('Выбрасывает исключение, если в параметры передан undefined', function(assert) {
         assert.throws(
             () => findUniqueProperties({ a: -7}, undefined),
             TypeError,
-            'Передача undefined в параметры выбрасывает TypeError')
+            'Передача undefined в параметры выбрасывает TypeError');
     });
 
     QUnit.test('Выбрасывает исключение, если в параметры передан boolean', function(assert) {
         assert.throws(
             () => findUniqueProperties({ a: -7}, false),
             TypeError,
-            'Передача false в параметры выбрасывает TypeError')
+            'Передача false в параметры выбрасывает TypeError');
     });
 
     QUnit.test('Выбрасывает исключение, если в параметры передан Map', function(assert) {
         assert.throws(
             () => findUniqueProperties({ a: -7}, new Map()),
             TypeError,
-            'Передача false в параметры выбрасывает TypeError')
+            'Передача false в параметры выбрасывает TypeError');
     });
 });

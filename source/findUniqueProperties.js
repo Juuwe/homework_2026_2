@@ -21,8 +21,8 @@ const isValidObject = (value) => {
  * @returns {*} - поверхностная копия или исходное значение
  */
 const shallowCopy = (value) => {
-  if (!value || typeof value !== 'object') {
-    return value
+  if (value === null || typeof value !== 'object') {
+    return value;
   }
 
   return Array.isArray(value) ? [...value] : { ...value };
