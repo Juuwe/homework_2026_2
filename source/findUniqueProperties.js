@@ -51,19 +51,16 @@ const findUniqueProperties = (firstObject, secondObject) => {
     );
   }
 
-  const resultObject = {};
+  const allKeys = [...Object.keys(firstObject), ...Object.keys(secondObject)];
 
-  Object.keys(firstObject).forEach((key) => {
-    if (!Object.hasOwn(secondObject, key)) {
-      resultObject[key] = shallowCopy(firstObject[key]);
+  return allKeys.reduce((resultObject, key) => {
+    const inFirst = Object.hasOwn(firstObject, key);
+    const inSecond = Object.hasOwn(secondObject, key);
+
+    if (inFirst !== inSecond) {
+      resultObject[key] = shallowCopy(inFirst ? firstObject[key] : secondObject[key]);
     }
-  });
 
-  Object.keys(secondObject).forEach((key) => {
-    if (!Object.hasOwn(firstObject, key)) {
-      resultObject[key] = shallowCopy(secondObject[key]);
-    }
-  });
-
-  return resultObject;
+    return resultObject;
+  }, {});
 };
