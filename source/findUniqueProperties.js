@@ -15,6 +15,20 @@ const isValidObject = (value) => {
 }
 
 /**
+ * Делает поверхностное копирование, если передан объект или массив,
+ * но для примитивов и функций ниичего не происходит
+ * @param {*} value - копируемое значение
+ * @returns {*} - поверхностная копия или исходное значение
+ */
+const shallowCopy = (value) => {
+  if (!value || typeof value !== 'object') {
+    return value
+  }
+
+  return Array.isArray(value) ? [...value] : { ...value };
+}
+
+/**
  * Функция, которая принимает два объекта и возвращает новый объект,
  * содержащий только те свойства, которые уникальны для каждого из объектов
  *
@@ -30,7 +44,7 @@ const isValidObject = (value) => {
  * @returns {Object} новый объект, содержащий только уникальные свойства
  * @throws {TypeError} ошибка, если хотя бы один из аргументов не является валидным объектом
  */
-function findUniqueProperties(firstObject, secondObject) {
+const findUniqueProperties = (firstObject, secondObject) => {
   if (!isValidObject(firstObject) || !isValidObject(secondObject)) {
     throw new TypeError(
       'Оба аргумента функции findUniqueProperties должны быть валидными объектами.',
@@ -41,15 +55,15 @@ function findUniqueProperties(firstObject, secondObject) {
 
   Object.keys(firstObject).forEach((key) => {
     if (!Object.hasOwn(secondObject, key)) {
-      resultObject[key] = firstObject[key];
+      resultObject[key] = shallowCopy(firstObject[key]);
     }
   });
 
   Object.keys(secondObject).forEach((key) => {
     if (!Object.hasOwn(firstObject, key)) {
-      resultObject[key] = secondObject[key];
+      resultObject[key] = shallowCopy(secondObject[key]);
     }
   });
 
   return resultObject;
-}
+};
