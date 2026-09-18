@@ -61,6 +61,66 @@ QUnit.module('Тестируем функцию findUniqueProperties', function(
         assert.deepEqual(result, { a: 1, c: 3 }, 'Два объекта без прототипа не меняют ожидаемое поведение функции.');
     });
 
+    QUnit.test('Не выполняет копирование свойств-объектов по ссылке, а делает поверхностное копирование', function(assert) {
+        const originalPropertyObject = { username: "daniil", password: "123" }
+
+        const result = findUniqueProperties(
+            { 101:  originalPropertyObject},
+            { 102: { score: 100, total: 75 } }
+        );
+
+        assert.notStrictEqual(
+            result[101],
+            originalPropertyObject,
+            'Свойство-объект результата не должен совпадать по ссылке с исходным'
+        );
+
+        result[101].username = "unknown"
+
+        assert.deepEqual(originalPropertyObject, { username: "daniil", password: "123" }, '.');
+    });
+
+    QUnit.test('Не выполняет копирование свойства-массива по ссылке, а делает поверхностное копирование', function(assert) {
+        const originalArray = [10, 20, 30];
+
+        const result = findUniqueProperties(
+            { 101: originalArray },
+            { 102: [15, 25, 35] }
+        );
+
+        assert.notStrictEqual(
+            result[101],
+            originalArray,
+            'Свойство-массив результата не должно совпадать по ссылке с исходным'
+        );
+
+        result[101].push(1231);
+
+        assert.deepEqual(originalArray, [10, 20, 30], 'Исходный массив не изменился после изменения скопированного массива');
+    });
+
+    QUnit.test('Выполняет копирование по значению / ссылке для свойств-функции/Symbol', function(assert) {
+        const originalSymbol = Symbol('original')
+        const originalFunction = () => 10;
+
+        const result = findUniqueProperties(
+            { 101: originalFunction, 104: originalSymbol },
+            { 102: () => 100 }
+        );
+
+        assert.strictEqual(
+            result[101],
+            originalFunction,
+            'Свойство-функция передано по ссылке'
+        );
+
+        assert.strictEqual(
+            result[104],
+            originalSymbol,
+            'Symbol передан по значению'
+        );
+    });
+
     QUnit.test('Выбрасывает исключение, если вместо валидного объекта передан Set', function(assert) {
         assert.throws(
             () => findUniqueProperties(new Set([1, 5, 2]), { a: -7}),
